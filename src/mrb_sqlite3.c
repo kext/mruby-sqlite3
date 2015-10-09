@@ -155,8 +155,8 @@ row_to_value(mrb_state* mrb, sqlite3_stmt* stmt) {
       break;
     case SQLITE_BLOB:
       {
-        int size = sqlite3_column_bytes(stmt, i);
         const char* ptr = sqlite3_column_blob(stmt, i);
+        int size = sqlite3_column_bytes(stmt, i);
         mrb_ary_push(mrb, a, mrb_str_new(mrb, ptr, size));
       }
       break;
@@ -166,7 +166,8 @@ row_to_value(mrb_state* mrb, sqlite3_stmt* stmt) {
     case SQLITE_TEXT:
       {
         const char* value = (const char*) sqlite3_column_text(stmt, i);
-        mrb_ary_push(mrb, a, mrb_str_new_cstr(mrb, value));
+        int size = sqlite3_column_bytes(stmt, i);
+        mrb_ary_push(mrb, a, mrb_str_new(mrb, value, size));
       }
       break;
     }
